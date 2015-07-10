@@ -30,6 +30,13 @@ module MysqlDumpSlow
       total_rows_sent / total_count
     end
 
+    def to_mysqldumpslow
+      <<-EOS
+Count: #{total_count}  Time=#{average_query_time/1000}s (#{total_query_time/1000}s)  Lock=#{average_lock_time/1000}s (#{total_lock_time/1000}s)  Rows=#{average_rows_sent} (#{total_rows_sent}),  #{ user_hosts.size == 1 ? user_hosts.first : user_hosts.size.to_s + 'hosts'}
+  #{abstract_query}
+      EOS
+    end
+
     private
 
     def count_up_counter
