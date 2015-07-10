@@ -1,28 +1,37 @@
 module MysqlDumpSlow
   class Summary
+    include Enumerable
 
     def initialize(logs)
       @logs = logs
+      summarize
     end
 
+    def sort_by(order)
+      summary.sort_by do |counter|
+        counter.send(order.to_sym) if counter.respond_to?(order.to_sym)
+      end.reverse
+    end
+
+    def each
+      summary.each {|s| yield s }
+    end
+
+    private
+
     def summarize
+      parser = SQLParser::Parser.new
       @logs.each do |log|
         sql = parser.scan_str(log.sql_text).to_sql
         counter = summary.find{|s| s.abstract_query == sql }
         counter ||= ( summary << Counter.new(sql) ).last
         counter.count_up(log)
       end
-      summary
+      @summary = sort_by(:average_query_time)
     end
-
-    private
 
     def summary
       @summary ||= []
-    end
-
-    def parser
-      @parser ||= SQLParser::Parser.new
     end
   end
 end
