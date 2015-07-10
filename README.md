@@ -1,4 +1,4 @@
-# MysqlDumpSlow
+# MysqlDumpSlow [![Build Status](https://travis-ci.org/monochromegane/mysql_dump_slow.svg?branch=master)](https://travis-ci.org/monochromegane/mysql_dump_slow)
 
 A library to summarize MySQL slow\_log records in Ruby.
 
