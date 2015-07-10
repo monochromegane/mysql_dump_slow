@@ -8,8 +8,9 @@ module MysqlDumpSlow
     def summarize
       @logs.each do |log|
         sql = parser.scan_str(log.sql_text).to_sql
-        summary[sql] = Counter.new unless summary.key?(sql)
-        summary[sql].count_up(log)
+        counter = summary.find{|s| s.abstract_query == sql }
+        counter ||= ( summary << Counter.new(sql) ).last
+        counter.count_up(log)
       end
       summary
     end
@@ -17,7 +18,7 @@ module MysqlDumpSlow
     private
 
     def summary
-      @summary ||= {}
+      @summary ||= []
     end
 
     def parser

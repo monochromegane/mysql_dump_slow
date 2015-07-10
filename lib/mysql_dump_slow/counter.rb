@@ -1,6 +1,10 @@
 module MysqlDumpSlow
   class Counter
-    attr_reader :total_count, :total_query_time, :total_lock_time, :total_rows_sent, :user_hosts
+    attr_reader :abstract_query, :total_count, :total_query_time, :total_lock_time, :total_rows_sent, :user_hosts
+
+    def initialize(abstract_query)
+      @abstract_query = abstract_query
+    end
 
     def count_up(log)
       count_up_query_time(log.query_time)
