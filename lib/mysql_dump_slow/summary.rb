@@ -20,8 +20,7 @@ module MysqlDumpSlow
     private
 
     def summarize
-
-      @logs.each do |log|
+      @logs.find_each do |log|
         sql = Sql.mask(log.sql_text)
         counter = summary.find{|s| s.abstract_query == sql }
         counter ||= ( summary << Counter.new(sql) ).last

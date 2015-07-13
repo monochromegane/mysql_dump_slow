@@ -64,7 +64,7 @@ Count: 2  Time=10s (20s)  Lock=20s (40s)  Rows=300 (600),  host_1
   end
 
   def slow_logs
-    [
+    logs = [
       # query1
       OpenStruct.new(
         sql_text:   'SELECT * FROM T WHERE F1 = 1',
@@ -90,5 +90,11 @@ Count: 2  Time=10s (20s)  Lock=20s (40s)  Rows=300 (600),  host_1
         user_host:  'host_1'
       ),
     ]
+
+    # mock active record find_each method
+    def logs.find_each(&block)
+      each(&block)
+    end
+    logs
   end
 end
