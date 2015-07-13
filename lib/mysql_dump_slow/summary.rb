@@ -13,8 +13,8 @@ module MysqlDumpSlow
       end.reverse
     end
 
-    def each
-      summary.each {|s| yield s }
+    def each(&block)
+      summary.each(&block)
     end
 
     private
