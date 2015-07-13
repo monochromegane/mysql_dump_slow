@@ -42,8 +42,8 @@ Count: 2  Time=100s (200s)  Lock=200s (400s)  Rows=300 (600),  host_1
 
     # masking values
     expect_abstract_queries = [
-      'SELECT * FROM `T` WHERE `F1` = N',
-      "SELECT * FROM `T` WHERE (`F1` = N AND `F2` = 'S')"
+      'SELECT * FROM T WHERE F1 = N',
+      "SELECT * FROM T WHERE F1 = N AND F2 = 'S'"
     ]
     summary.each_with_index do |counter, i|
       assert_equal expect_abstract_queries[i], counter.abstract_query
@@ -55,8 +55,8 @@ Count: 2  Time=100s (200s)  Lock=200s (400s)  Rows=300 (600),  host_1
 
     # sort by rows_sent
     expect_abstract_queries = [
-      "SELECT * FROM `T` WHERE (`F1` = N AND `F2` = 'S')",
-      'SELECT * FROM `T` WHERE `F1` = N',
+      "SELECT * FROM T WHERE F1 = N AND F2 = 'S'",
+      'SELECT * FROM T WHERE F1 = N',
     ]
     summary.each_with_index do |counter, i|
       assert_equal expect_abstract_queries[i], counter.abstract_query

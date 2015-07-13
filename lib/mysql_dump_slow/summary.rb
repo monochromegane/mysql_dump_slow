@@ -20,9 +20,9 @@ module MysqlDumpSlow
     private
 
     def summarize
-      parser = SQLParser::Parser.new
+
       @logs.each do |log|
-        sql = parser.scan_str(log.sql_text).to_sql
+        sql = Sql.mask(log.sql_text)
         counter = summary.find{|s| s.abstract_query == sql }
         counter ||= ( summary << Counter.new(sql) ).last
         counter.count_up(log)
