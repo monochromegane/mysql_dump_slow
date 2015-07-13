@@ -2,6 +2,8 @@ module MysqlDumpSlow
   class Counter
     attr_reader :abstract_query, :total_count, :total_query_time, :total_lock_time, :total_rows_sent, :user_hosts
 
+    TIME_BASE_SEC = Time.local(2000, 1, 1).to_i
+
     def initialize(abstract_query)
       @abstract_query = abstract_query
     end
@@ -46,12 +48,12 @@ Count: #{total_count}  Time=#{average_query_time/1000}s (#{total_query_time/1000
 
     def count_up_query_time(query_time)
       @total_query_time ||= 0
-      @total_query_time += time_to_ms(query_time)
+      @total_query_time += time_to_ms(query_time - TIME_BASE_SEC)
     end
 
     def count_up_lock_time(lock_time)
       @total_lock_time ||= 0
-      @total_lock_time += time_to_ms(lock_time)
+      @total_lock_time += time_to_ms(lock_time - TIME_BASE_SEC)
     end
 
     def count_up_rows_sent(rows_sent)
@@ -69,4 +71,3 @@ Count: #{total_count}  Time=#{average_query_time/1000}s (#{total_query_time/1000
     end
   end
 end
-

@@ -8,14 +8,14 @@ class MysqlDumpSlowTest < Minitest::Test
   def test_counter
     query = 'SELECT * FROM T'
     output = <<-EOS
-Count: 2  Time=100s (200s)  Lock=200s (400s)  Rows=300 (600),  host_1
+Count: 2  Time=10s (20s)  Lock=20s (40s)  Rows=300 (600),  host_1
   SELECT * FROM T
     EOS
 
     counter = ::MysqlDumpSlow::Counter.new(query)
     log = OpenStruct.new(
-      query_time: Time.at(100),
-      lock_time:  Time.at(200),
+      query_time: Time.local(2000, 1, 1, 0, 0, 10),
+      lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
       rows_sent:  300,
       user_host:  'host_1'
     )
@@ -24,10 +24,10 @@ Count: 2  Time=100s (200s)  Lock=200s (400s)  Rows=300 (600),  host_1
 
     assert_equal query,      counter.abstract_query
     assert_equal 2,          counter.total_count
-    assert_equal 200000,     counter.total_query_time
-    assert_equal 100000,     counter.average_query_time
-    assert_equal 400000,     counter.total_lock_time
-    assert_equal 200000,     counter.average_lock_time
+    assert_equal 20000,     counter.total_query_time
+    assert_equal 10000,     counter.average_query_time
+    assert_equal 40000,     counter.total_lock_time
+    assert_equal 20000,     counter.average_lock_time
     assert_equal 600,        counter.total_rows_sent
     assert_equal 300,        counter.average_rows_sent
     assert_equal ['host_1'], counter.user_hosts
@@ -68,24 +68,24 @@ Count: 2  Time=100s (200s)  Lock=200s (400s)  Rows=300 (600),  host_1
       # query1
       OpenStruct.new(
         sql_text:   'SELECT * FROM T WHERE F1 = 1',
-        query_time: Time.at(100),
-        lock_time:  Time.at(200),
+        query_time: Time.local(2000, 1, 1, 0, 0, 10),
+        lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
         rows_sent:  300,
         user_host:  'host_1'
       ),
       # query1
       OpenStruct.new(
         sql_text:   'SELECT * FROM T WHERE F1 = 1',
-        query_time: Time.at(300),
-        lock_time:  Time.at(200),
+        query_time: Time.local(2000, 1, 1, 0, 0, 30),
+        lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
         rows_sent:  300,
         user_host:  'host_1'
       ),
       # query2
       OpenStruct.new(
         sql_text:   "SELECT * FROM T WHERE F1 = 1 AND F2 = 'a'",
-        query_time: Time.at(100),
-        lock_time:  Time.at(200),
+        query_time: Time.local(2000, 1, 1, 0, 0, 10),
+        lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
         rows_sent:  500,
         user_host:  'host_1'
       ),
