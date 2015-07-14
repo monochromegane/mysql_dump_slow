@@ -3,7 +3,7 @@ module MysqlDumpSlow
     include Enumerable
 
     def initialize(logs)
-      @logs = logs
+      @logs = SlowLog.new(logs)
       summarize
     end
 
