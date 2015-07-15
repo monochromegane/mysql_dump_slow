@@ -2,7 +2,7 @@ module MysqlDumpSlow
   class Counter
     attr_reader :abstract_query, :total_count, :total_query_time, :total_lock_time, :total_rows_sent, :user_hosts
 
-    TIME_BASE_SEC = Time.local(2000, 1, 1).to_i
+    TIME_BASE_SEC = Time.utc(2000, 1, 1).to_i
 
     def initialize(abstract_query)
       @abstract_query = abstract_query

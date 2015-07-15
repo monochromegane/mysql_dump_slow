@@ -14,8 +14,8 @@ Count: 2  Time=10s (20s)  Lock=20s (40s)  Rows=300 (600),  host_1
 
     counter = ::MysqlDumpSlow::Counter.new(query)
     log = OpenStruct.new(
-      query_time: Time.local(2000, 1, 1, 0, 0, 10),
-      lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
+      query_time: Time.utc(2000, 1, 1, 0, 0, 10),
+      lock_time:  Time.utc(2000, 1, 1, 0, 0, 20),
       rows_sent:  300,
       user_host:  'host_1'
     )
@@ -68,24 +68,24 @@ Count: 2  Time=10s (20s)  Lock=20s (40s)  Rows=300 (600),  host_1
       # query1
       OpenStruct.new(
         sql_text:   'SELECT * FROM T WHERE F1 = 1',
-        query_time: Time.local(2000, 1, 1, 0, 0, 10),
-        lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
+        query_time: Time.utc(2000, 1, 1, 0, 0, 10),
+        lock_time:  Time.utc(2000, 1, 1, 0, 0, 20),
         rows_sent:  300,
         user_host:  'host_1'
       ),
       # query1
       OpenStruct.new(
         sql_text:   'SELECT * FROM T WHERE F1 = 1',
-        query_time: Time.local(2000, 1, 1, 0, 0, 30),
-        lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
+        query_time: Time.utc(2000, 1, 1, 0, 0, 30),
+        lock_time:  Time.utc(2000, 1, 1, 0, 0, 20),
         rows_sent:  300,
         user_host:  'host_1'
       ),
       # query2
       OpenStruct.new(
         sql_text:   "SELECT * FROM T WHERE F1 = 1 AND F2 = 'a'",
-        query_time: Time.local(2000, 1, 1, 0, 0, 10),
-        lock_time:  Time.local(2000, 1, 1, 0, 0, 20),
+        query_time: Time.utc(2000, 1, 1, 0, 0, 10),
+        lock_time:  Time.utc(2000, 1, 1, 0, 0, 20),
         rows_sent:  500,
         user_host:  'host_1'
       ),
