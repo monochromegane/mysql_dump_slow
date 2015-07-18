@@ -41,15 +41,7 @@ An example is the following.
 
 ```ruby
 class SlowLog < ActiveRecord::Base
-  self.table_name = 'slow_log'
-
-  def self.new_connection_info
-    connection_info = self.configrations[Rails.env]
-    connection_info["database"] = "mysql"
-    connection_info
-  end
-
-  establish_connection new_connection_info
+  self.table_name = 'mysql.slow_log'
 end
 ```
 
